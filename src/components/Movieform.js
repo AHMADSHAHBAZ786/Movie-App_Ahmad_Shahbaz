@@ -10,7 +10,7 @@ const AddMovieForm = () => {
     e.preventDefault();
     if (newMovie.movieName && newMovie.rating && newMovie.duration) {
       if(isValidDuration(newMovie.duration)) {
-        addMovie(newMovie);
+        addMovie({...newMovie, duration: convertDurationToHours(newMovie.duration)});
         setNewMovie({ movieName: '', rating: '', duration: '' });
       }
       else {
@@ -22,6 +22,16 @@ const AddMovieForm = () => {
     const durationRegex = /^(\d+(\.\d+)?(h|m))$/;
     return durationRegex.test(duration);
   };
+  const convertDurationToHours = (durationString) => {
+    const match = durationString.match(/(\d*\.?\d*)\s*([hm])/);
+    const value = parseFloat(match[1]);
+    const unit = match[2];
+    if (unit === 'h') {
+      return value;
+    } else if (unit === 'm') {
+      return value / 60;
+    }
+  }  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewMovie({ ...newMovie, [name]: value });

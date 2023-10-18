@@ -13,8 +13,11 @@ export const MovieProvider = ({ children }) => {
     setMovies([...movies, newMovie]);
   };
 
+  const sortedMovies = [...movies];
+  sortedMovies.sort((a, b) => parseFloat(b.duration) - parseFloat(a.duration));
+
   return (
-    <MovieContext.Provider value={{ movies, addMovie }}>
+    <MovieContext.Provider value={{ movies: sortedMovies, addMovie }}>
       {children}
     </MovieContext.Provider>
   );
